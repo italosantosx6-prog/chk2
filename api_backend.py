@@ -3,12 +3,13 @@
 API Backend Flask para CHK Tropa do Bom e Novo
 Integra validador_5.py + main.py com interface HTML
 """
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 import time
+import os
 from validador_5 import Validador3DS
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='.')
 CORS(app)  # Permite requisições do HTML
 
 # Status global
@@ -19,6 +20,11 @@ status_validacao = {
     "cartao_atual": "",
     "resultados": []
 }
+
+@app.route('/')
+def index():
+    """Serve o HTML principal"""
+    return send_from_directory('.', 'index.html')
 
 @app.route('/api/health', methods=['GET'])
 def health():
