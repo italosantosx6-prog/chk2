@@ -10,7 +10,8 @@ import os
 from validador_5 import Validador3DS
 
 app = Flask(__name__, static_folder='.')
-CORS(app)  # Permite requisições do HTML
+# CORS configurado para aceitar todas as origens
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 # Status global
 status_validacao = {
@@ -29,6 +30,7 @@ def index():
 @app.route('/api/health', methods=['GET'])
 def health():
     """Verifica se API está online"""
+    print("✅ Health check recebido!")
     return jsonify({"status": "online", "message": "API CHK Tropa funcionando!"})
 
 @app.route('/api/validar', methods=['POST'])
