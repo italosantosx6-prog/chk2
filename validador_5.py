@@ -23,18 +23,17 @@ class Validador3DS:
     
     def __init__(self):
         self.token = None
-        # Configurar proxy com autenticação
-        proxy_auth = f"{self.PROXY_USER}:{self.PROXY_PASS}"
-        proxy_url = f"http://{proxy_auth}@{self.PROXY_HOST}:{self.PROXY_PORT}"
-        self.proxies = {
-            "http": proxy_url,
-            "https": proxy_url
-        }
-        # Se você NÃO tiver proxy, descomente as duas linhas abaixo:
-        # self.proxies = None
+        # PROXY DESABILITADO POR PADRÃO (habilite se necessário)
+        self.proxies = None
         
-        print(f"🌐 Proxy configurado: {self.PROXY_HOST}:{self.PROXY_PORT}")
-        print(f"👤 Usuário: {self.PROXY_USER}")
+        # Se precisar de proxy, descomente:
+        # proxy_auth = f"{self.PROXY_USER}:{self.PROXY_PASS}"
+        # proxy_url = f"http://{proxy_auth}@{self.PROXY_HOST}:{self.PROXY_PORT}"
+        # self.proxies = {"http": proxy_url, "https": proxy_url}
+        # print(f"🌐 Proxy configurado: {self.PROXY_HOST}:{self.PROXY_PORT}")
+        
+        print("=" * 50)
+        print("🚀 Validador3DS iniciado (sem proxy)")
         print("=" * 50)
         
         self.session = requests.Session()

@@ -135,7 +135,11 @@ def validar_cartoes():
         
     except Exception as e:
         status_validacao["rodando"] = False
-        return jsonify({"sucesso": False, "erro": str(e)}), 500
+        import traceback
+        erro_detalhe = traceback.format_exc()
+        print(f"❌ ERRO NA API: {str(e)}")
+        print(erro_detalhe)
+        return jsonify({"sucesso": False, "erro": f"{str(e)} - Ver logs do servidor"}), 500
 
 @app.route('/api/status', methods=['GET'])
 def get_status():
