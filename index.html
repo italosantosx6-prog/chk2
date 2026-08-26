@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0a0e27">
+<meta name="mobile-web-app-capable" content="yes">
+<title>CHK Tropa do Bom e Novo • Sistema 3DS</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='7' fill='%230b0d16'/><path d='M16 6L22 10V17C22 21.5 16 26 16 26C16 26 10 21.5 10 17V10Z' fill='none' stroke='%234f8aff' stroke-width='1.8'/><circle cx='16' cy='16' r='2.5' fill='%234f8aff'/></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ============ CSS VARIABLES & RESET ============ */
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+
+:root{
+  --bg0:#05070f;--bg1:#090b14;--bg2:#0d1020;--bg3:#111628;--bg4:#171c30;--bg5:#1c2238;
+  --b0:rgba(255,255,255,0.035);--b1:rgba(255,255,255,0.07);--b2:rgba(255,255,255,0.12);--b3:rgba(255,255,255,0.18);
+  --t0:#eef2ff;--t1:#bec8e8;--t2:#6e7fa8;--t3:#3a4460;--t4:#232a40;
+  --blue0:#4f8aff;--blue1:#2d6aef;--blue2:#1a4cbf;--blue-a:rgba(79,138,255,0.15);--blue-b:rgba(79,138,255,0.08);
+  --cyan0:#22d4c8;--cyan1:#0fb0a4;--violet0:#9b72ff;--violet1:#7a50e0;--violet-a:rgba(155,114,255,0.12);
+  --green0:#20e08a;--green1:#0eb870;--green-a:rgba(32,224,138,0.12);--green-b:rgba(32,224,138,0.06);
+  --amber0:#ffb84d;--amber1:#e0922a;--amber-a:rgba(255,184,77,0.12);--amber-b:rgba(255,184,77,0.06);
+  --red0:#ff4d6a;--red1:#e02848;--red-a:rgba(255,77,106,0.12);--red-b:rgba(255,77,106,0.06);
+  --telegram:#0088cc;--telegram-a:rgba(0,136,204,0.12);
+  --mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;
+  --r1:4px;--r2:8px;--r3:12px;--r4:16px;--r5:20px;
+  --transition-speed:0.4s;
+  --toast-bg:rgba(17,22,40,0.96);
+  --particle-color:79,138,255;
+  --icon-on:#20e08a;
+  --icon-off:#ff4d6a;
+  --hdr-bg:rgba(9,11,20,0.85);
+  --card-bg:rgba(9,11,20,0.75);
+  --stat-bg:rgba(9,11,20,0.7);
+}
+
+/* ===== TEMA AMOLED DARK ===== */
+[data-theme="amoled-dark"] {
+  --bg0:#000000;--bg1:#0a0a0a;--bg2:#111111;--bg3:#1a1a1a;--bg4:#222222;--bg5:#2a2a2a;
+  --b0:rgba(255,255,255,0.05);--b1:rgba(255,255,255,0.1);--b2:rgba(255,255,255,0.15);--b3:rgba(255,255,255,0.22);
+  --t0:#ffffff;--t1:#e0e0e0;--t2:#999999;--t3:#666666;--t4:#444444;
+  --blue0:#ffffff;--blue1:#cccccc;--blue2:#999999;--blue-a:rgba(255,255,255,0.15);--blue-b:rgba(255,255,255,0.08);
+  --cyan0:#cccccc;--cyan1:#999999;--violet0:#ffffff;--violet1:#cccccc;--violet-a:rgba(255,255,255,0.12);
+  --green0:#ffffff;--green1:#cccccc;--green-a:rgba(255,255,255,0.12);--green-b:rgba(255,255,255,0.06);
+  --amber0:#ffffff;--amber1:#cccccc;--amber-a:rgba(255,255,255,0.12);--amber-b:rgba(255,255,255,0.06);
+  --red0:#ffffff;--red1:#cccccc;--red-a:rgba(255,255,255,0.12);--red-b:rgba(255,255,255,0.06);
+  --telegram:#ffffff;--telegram-a:rgba(255,255,255,0.12);
+  --toast-bg:rgba(0,0,0,0.96);
+  --particle-color:255,255,255;
+  --icon-on:#ffffff;
+  --icon-off:#999999;
+  --hdr-bg:rgba(0,0,0,0.9);
+  --card-bg:rgba(0,0,0,0.85);
+  --stat-bg:rgba(0,0,0,0.8);
+}
+[data-theme="amoled-dark"] body{
+  background:#000000;
+}
+[data-theme="amoled-dark"] .blob{
+  opacity:0.15;
+  filter:blur(80px);
+}
+[data-theme="amoled-dark"] .blob1{background:linear-gradient(45deg, #ffffff, #cccccc)}
+[data-theme="amoled-dark"] .blob2{background:linear-gradient(45deg, #aaaaaa, #888888)}
+[data-theme="amoled-dark"] .blob3{background:linear-gradient(45deg, #999999, #666666)}
+
+/* ===== TEMA AMOLED LIGHT ===== */
+[data-theme="amoled-light"] {
+  --bg0:#ffffff;--bg1:#f5f5f5;--bg2:#eeeeee;--bg3:#e8e8e8;--bg4:#e0e0e0;--bg5:#d8d8d8;
+  --b0:rgba(0,0,0,0.04);--b1:rgba(0,0,0,0.08);--b2:rgba(0,0,0,0.15);--b3:rgba(0,0,0,0.22);
+  --t0:#000000;--t1:#333333;--t2:#666666;--t3:#999999;--t4:#bbbbbb;
+  --blue0:#000000;--blue1:#333333;--blue2:#666666;--blue-a:rgba(0,0,0,0.15);--blue-b:rgba(0,0,0,0.08);
+  --cyan0:#333333;--cyan1:#666666;--violet0:#000000;--violet1:#333333;--violet-a:rgba(0,0,0,0.12);
+  --green0:#000000;--green1:#333333;--green-a:rgba(0,0,0,0.12);--green-b:rgba(0,0,0,0.06);
+  --amber0:#000000;--amber1:#333333;--amber-a:rgba(0,0,0,0.12);--amber-b:rgba(0,0,0,0.06);
+  --red0:#000000;--red1:#333333;--red-a:rgba(0,0,0,0.12);--red-b:rgba(0,0,0,0.06);
+  --telegram:#000000;--telegram-a:rgba(0,0,0,0.12);
+  --toast-bg:rgba(255,255,255,0.96);
+  --particle-color:0,0,0;
+  --icon-on:#000000;
+  --icon-off:#999999;
+  --hdr-bg:rgba(255,255,255,0.9);
+  --card-bg:rgba(255,255,255,0.85);
+  --stat-bg:rgba(255,255,255,0.8);
+}
+[data-theme="amoled-light"] body{
+  background:linear-gradient(135deg, #f0f4ff 0%, #e8eeff 25%, #dde5ff 50%, #e8eeff 75%, #f0f4ff 100%);
+  background-size:400% 400%;
+}
+[data-theme="amoled-light"] .blob{
+  opacity:0.2;
+  filter:blur(70px);
+}
+[data-theme="amoled-light"] .blob1{background:linear-gradient(45deg, #4f8aff, #9b72ff)}
+[data-theme="amoled-light"] .blob2{background:linear-gradient(45deg, #22d4c8, #20e08a)}
+[data-theme="amoled-light"] .blob3{background:linear-gradient(45deg, #9b72ff, #ff4d6a)}
+
+/* Transições globais */
+html, body, * {
+  transition: background-color var(--transition-speed) ease, 
+              color var(--transition-speed) ease, 
+              border-color var(--transition-speed) ease,
+              box-shadow var(--transition-speed) ease,
+              fill var(--transition-speed) ease,
+              stroke var(--transition-speed) ease,
+              backdrop-filter var(--transition-speed) ease;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+}
+
+/* Smooth scroll para mobile */
+html{
+  font-size:14px;
+  -webkit-text-size-adjust:100%;
+  scroll-behavior:smooth;
+  -webkit-overflow-scrolling:touch;
+}
+body{
+  font-family:var(--sans);
+  background:linear-gradient(135deg, #0a0e27 0%, #1a1042 25%, #2d1b69 50%, #1a1042 75%, #0a0e27 100%);
+  background-size:400% 400%;
+  animation:gradientShift 15s ease infinite;
+  color:var(--t1);
+  min-height:100vh;
+  overflow-x:hidden;
+  padding-bottom:60px;
+  position:relative;
+}
+@keyframes gradientShift{
+  0%{background-position:0% 50%}
+  50%{background-position:100% 50%}
+  100%{background-position:0% 50%}
+}
+.animated-bg{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  pointer-events:none;
+  z-index:0;
+  overflow:hidden;
+}
+.blob{
+  position:absolute;
+  border-radius:50%;
+  filter:blur(60px);
+  opacity:0.3;
+  animation:float 20s ease-in-out infinite;
+}
+.blob1{
+  width:400px;
+  height:400px;
+  background:linear-gradient(45deg, #4f8aff, #9b72ff);
+  top:10%;
+  left:10%;
+  animation-delay:0s;
+}
+.blob2{
+  width:350px;
+  height:350px;
+  background:linear-gradient(45deg, #22d4c8, #20e08a);
+  bottom:10%;
+  right:15%;
+  animation-delay:7s;
+}
+.blob3{
+  width:300px;
+  height:300px;
+  background:linear-gradient(45deg, #9b72ff, #ff4d6a);
+  top:50%;
+  right:20%;
+  animation-delay:3s;
+}
+@keyframes float{
+  0%, 100%{transform:translate(0, 0) scale(1) rotate(0deg)}
+  25%{transform:translate(50px, -50px) scale(1.1) rotate(90deg)}
+  50%{transform:translate(-30px, 40px) scale(0.9) rotate(180deg)}
+  75%{transform:translate(40px, 30px) scale(1.05) rotate(270deg)}
+}
+#cvs{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}
+.page{position:relative;z-index:2;max-width:1200px;margin:0 auto;padding:28px 20px}
+
+/* ============ THEME TOGGLE ============ */
+.theme-toggle-wrap{position:fixed;bottom:20px;right:20px;z-index:1000}
+.theme-group{
+  display:flex;
+  gap:4px;
+  background:var(--bg3);
+  border:1px solid var(--b2);
+  border-radius:30px;
+  padding:4px 6px;
+  backdrop-filter:blur(20px);
+  box-shadow:0 4px 16px rgba(0,0,0,.3);
+}
+.theme-btn{
+  background:transparent;
+  border:none;
+  padding:6px 12px;
+  border-radius:20px;
+  font-family:var(--mono);
+  font-size:.58rem;
+  font-weight:600;
+  color:var(--t2);
+  cursor:pointer;
+  transition:all .3s ease;
+  display:flex;
+  align-items:center;
+  gap:5px;
+  white-space:nowrap;
+}
+.theme-btn:hover{color:var(--t1);background:var(--b0)}
+.theme-btn.active{
+  background:linear-gradient(135deg,var(--blue0),var(--violet0));
+  color:var(--bg0);
+  box-shadow:0 2px 12px var(--blue-a);
+}
+[data-theme="amoled-dark"] .theme-btn.active,
+[data-theme="amoled-light"] .theme-btn.active{
+  color:var(--bg0);
+}
+.theme-btn svg{width:14px;height:14px}
+
+/* ============ HEADER ============ */
+.hdr{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 22px;background:var(--hdr-bg);border:1px solid var(--b1);border-radius:var(--r5);margin-bottom:18px;backdrop-filter:blur(20px);flex-wrap:wrap}
+.hdr-l{display:flex;align-items:center;gap:14px}
+.hdr-ico{
+  width:42px;height:42px;border-radius:var(--r3);
+  background:linear-gradient(135deg,var(--blue0) 0%,var(--violet0) 100%);
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 24px var(--blue-a);flex-shrink:0
+}
+.hdr-ico svg{width:22px;height:22px;color:var(--bg0)}
+.hdr-title{font-size:1rem;font-weight:600;letter-spacing:-.025em;color:var(--t0)}
+.hdr-sub{font-family:var(--mono);font-size:.6rem;color:var(--t3);letter-spacing:.07em;text-transform:uppercase;margin-top:2px}
+.hdr-r{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.badge-v{font-family:var(--mono);font-size:.58rem;padding:3px 9px;border-radius:20px;background:var(--blue-b);color:var(--blue0);border:1px solid var(--blue-a);letter-spacing:.05em}
+.pulse-dot{width:7px;height:7px;border-radius:50%;background:var(--green0);box-shadow:0 0 7px var(--green0);animation:pdot 2.2s ease-in-out infinite}
+@keyframes pdot{0%,100%{opacity:1;box-shadow:0 0 7px var(--green0)}50%{opacity:.3;box-shadow:none}}
+
+/* ============ STATS ============ */
+.stats{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px}
+@media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--stat-bg);border:1px solid var(--b1);border-radius:var(--r4);padding:14px 10px;text-align:center;position:relative;overflow:hidden;backdrop-filter:blur(12px)}
+.stat::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--blue0);opacity:.25}
+.stat.sg::after{background:var(--green0);opacity:.4}
+.stat.sr::after{background:var(--red0);opacity:.4}
+.stat-v{font-family:var(--mono);font-size:1.7rem;font-weight:500;line-height:1;color:var(--t0);transition:all .25s}
+.stat.sg .stat-v{color:var(--icon-on)}
+.stat.sr .stat-v{color:var(--icon-off)}
+.stat-l{font-size:.58rem;color:var(--t3);margin-top:5px;letter-spacing:.08em;text-transform:uppercase;font-family:var(--mono)}
+
+/* ============ INFO BAR ============ */
+.info-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px;padding:12px 16px;background:var(--stat-bg);border:1px solid var(--b1);border-radius:var(--r4);backdrop-filter:blur(12px)}
+.info-item{display:flex;align-items:center;gap:8px;font-family:var(--mono);font-size:.62rem;color:var(--t3)}
+.info-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.info-dot.on{background:var(--icon-on);box-shadow:0 0 6px var(--icon-on)}
+.info-dot.mode{background:var(--blue0);box-shadow:0 0 6px var(--blue0)}
+.info-val{color:var(--t1);font-weight:500}
+
+/* ============ CARDS ============ */
+.card{background:var(--card-bg);border:1px solid var(--b1);border-radius:var(--r4);overflow:hidden;margin-bottom:14px;backdrop-filter:blur(16px)}
+.card-hd{display:flex;align-items:center;gap:8px;padding:11px 18px;border-bottom:1px solid var(--b0);font-family:var(--mono);font-size:.63rem;font-weight:500;color:var(--t3);letter-spacing:.07em;text-transform:uppercase}
+.chd-dot{width:5px;height:5px;border-radius:50%;background:var(--blue0);box-shadow:0 0 5px var(--blue0);flex-shrink:0}
+.card-body{padding:18px}
+
+/* ============ FORM ============ */
+.lbl{display:block;font-family:var(--mono);font-size:.62rem;font-weight:500;color:var(--t2);margin-bottom:8px;letter-spacing:.06em;text-transform:uppercase}
+textarea,input[type="text"]{width:100%;background:var(--bg1);border:1px solid var(--b2);border-radius:var(--r3);padding:13px 15px;font-family:var(--mono);font-size:12px;color:var(--t0);resize:vertical;outline:none;line-height:1.75;transition:border-color .2s,box-shadow .2s}
+textarea{min-height:130px}
+input[type="text"]{resize:none}
+textarea::placeholder,input::placeholder{color:var(--t4)}
+textarea:focus,input:focus{border-color:var(--blue0);box-shadow:0 0 0 3px var(--blue-a)}
+.hint{margin-top:8px;padding:8px 12px;background:var(--blue-b);border-left:2px solid var(--blue-a);border-radius:0 var(--r1) var(--r1) 0;font-family:var(--mono);font-size:.63rem;color:var(--t3)}
+
+/* ============ BUTTONS ============ */
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+@media(max-width:500px){.btns{flex-direction:column}}
+.btn{display:inline-flex;align-items:center;gap:6px;padding:9px 17px;border-radius:var(--r2);font-size:.76rem;font-weight:500;cursor:pointer;border:none;font-family:var(--sans);transition:all .15s ease;outline:none;white-space:nowrap}
+.btn svg{width:13px;height:13px;flex-shrink:0}
+.btn:active:not(:disabled){transform:scale(.97)}
+.btn:disabled{opacity:.28;cursor:not-allowed}
+@media(max-width:500px){.btn{justify-content:center}}
+.btn-go{background:linear-gradient(135deg,var(--blue0),var(--violet0));color:var(--bg0);box-shadow:0 4px 18px var(--blue-a)}
+.btn-go:hover:not(:disabled){box-shadow:0 4px 28px var(--blue-a);filter:brightness(1.08)}
+.btn-stop{background:var(--red-b);color:var(--red0);border:1px solid var(--red-a)}
+.btn-stop:hover:not(:disabled){background:var(--red-a)}
+.btn-ghost{background:var(--bg3);color:var(--t2);border:1px solid var(--b1)}
+.btn-ghost:hover:not(:disabled){background:var(--bg4);color:var(--t1)}
+.btn-sm{padding:6px 12px;font-size:.65rem}
+
+/* ============ PROGRESS ============ */
+.prog{margin-top:16px;display:none}
+.prog.show{display:block}
+.prog-track{height:2px;background:var(--b1);border-radius:1px;overflow:hidden}
+.prog-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--blue0),var(--cyan0));border-radius:1px;transition:width .45s cubic-bezier(.4,0,.2,1)}
+.prog-txt{font-family:var(--mono);font-size:.62rem;color:var(--t3);margin-top:6px}
+
+/* ============ CURRENT CARD ============ */
+.current-card{display:none;padding:8px 12px;margin-bottom:12px;background:var(--blue-b);border:1px solid var(--blue-a);border-radius:var(--r2);font-family:var(--mono);font-size:.62rem;color:var(--blue0)}
+.current-card.show{display:block}
+
+/* ============ TABS ============ */
+.tabs{display:flex;gap:3px;margin-bottom:14px;flex-wrap:wrap}
+.tab{background:none;border:1px solid transparent;padding:6px 13px;border-radius:var(--r2);font-size:.68rem;color:var(--t3);cursor:pointer;font-family:var(--mono);transition:all .15s}
+.tab:hover{color:var(--t1);background:var(--bg4)}
+.tab.on{background:var(--bg4);color:var(--t0);border-color:var(--b2)}
+.pane{display:none}.pane.on{display:block}
+
+/* ============ RESULT LIST ============ */
+.rlist{max-height:500px;overflow-y:auto;padding-right:2px}
+.rlist::-webkit-scrollbar{width:3px}
+.rlist::-webkit-scrollbar-track{background:transparent}
+.rlist::-webkit-scrollbar-thumb{background:var(--b2);border-radius:2px}
+.ri{display:flex;align-items:flex-start;gap:8px;padding:10px 14px;border-radius:var(--r3);margin-bottom:6px;border:1px solid var(--b0);transition:border-color .2s,background .2s;animation:riFade .22s ease;flex-wrap:wrap}
+.ri.live-result{background:var(--green-b);border-color:var(--green-a)}
+.ri.die-result{background:var(--bg2);border-color:var(--b0)}
+.ri:hover{border-color:var(--b1)}
+.ri.live-result:hover{background:var(--green-a);border-color:var(--green0)}
+.ri.die-result:hover{background:var(--bg3);border-color:var(--b1)}
+@keyframes riFade{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:none}}
+.ri-ico{flex-shrink:0;margin-top:2px}
+.ri-ico svg{width:16px;height:16px}
+.ri-ico.live svg{color:var(--icon-on)}
+.ri-ico.die svg{color:var(--icon-off)}
+.ri-content{flex:1;display:flex;flex-wrap:wrap;align-items:center;gap:8px;row-gap:5px}
+.ri-cartao{font-family:var(--mono);font-size:11px;color:var(--t0);font-weight:500;letter-spacing:.02em;word-break:break-all}
+.ri-sep{color:var(--t4);font-size:10px}
+.ri-bandeira{font-family:var(--mono);font-size:9px;padding:2px 8px;border-radius:4px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+.ri-bandeira.visa{background:rgba(59,130,246,0.18);color:#3b82f6}
+.ri-bandeira.master{background:rgba(239,68,68,0.18);color:#f87171}
+.ri-bandeira.amex{background:rgba(16,185,129,0.18);color:#34d399}
+.ri-bandeira.elo{background:rgba(245,158,11,0.18);color:#fbbf24}
+.ri-badge-3ds{font-family:var(--mono);font-size:9px;padding:2px 8px;border-radius:4px;font-weight:700;letter-spacing:.04em;background:var(--violet-a);color:var(--violet0)}
+.ri-slug{font-family:var(--mono);font-size:9px;padding:2px 8px;border-radius:4px;background:var(--blue-b);color:var(--blue0);letter-spacing:.04em}
+.ri-tempo{font-family:var(--mono);font-size:10px;color:var(--t3)}
+.ri-status{font-family:var(--mono);font-size:9px;padding:2px 8px;border-radius:4px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.ri-status.live{background:var(--green-a);color:var(--icon-on)}
+.ri-status.die{background:var(--red-a);color:var(--icon-off)}
+.ri-details{width:100%;display:flex;flex-wrap:wrap;gap:8px;margin-top:5px;padding-top:5px;border-top:1px dashed var(--b1)}
+.ri-detail-item{font-family:var(--mono);font-size:9px;background:var(--b0);padding:2px 8px;border-radius:12px;color:var(--t2)}
+.ri-detail-item strong{color:var(--icon-on);font-weight:500}
+.empty{padding:38px 0;text-align:center;color:var(--t4);font-family:var(--mono);font-size:.68rem}
+.empty svg{display:block;margin:0 auto 10px;opacity:.15;width:30px;height:30px}
+
+/* ============ TOASTS ============ */
+#toasts{position:fixed;top:18px;right:18px;z-index:9999;display:flex;flex-direction:column;gap:8px;pointer-events:none;max-width:320px}
+@media(max-width:480px){#toasts{top:auto;bottom:16px;right:10px;left:10px;max-width:100%}}
+.toast{display:flex;align-items:flex-start;gap:11px;padding:12px 15px;border-radius:var(--r4);font-family:var(--mono);font-size:.68rem;color:var(--t0);background:var(--toast-bg);border:1px solid var(--b2);backdrop-filter:blur(20px);box-shadow:0 8px 32px rgba(0,0,0,.55);pointer-events:auto;animation:tIn .3s cubic-bezier(.34,1.5,.64,1) forwards}
+.toast.out{animation:tOut .22s ease forwards}
+@keyframes tIn{from{opacity:0;transform:translateX(16px) scale(.95)}to{opacity:1;transform:none}}
+@keyframes tOut{to{opacity:0;transform:translateX(16px) scale(.95)}}
+.toast.t-live{border-left:3px solid var(--icon-on)}
+.toast.t-die{border-left:3px solid var(--icon-off)}
+.toast.t-telegram{border-left:3px solid var(--telegram)}
+.toast-ic{flex-shrink:0}
+.toast-ic svg{width:18px;height:18px}
+.toast.t-live .toast-ic svg{color:var(--icon-on)}
+.toast.t-die .toast-ic svg{color:var(--icon-off)}
+.toast-body strong{display:block;font-size:.7rem;color:var(--t0);margin-bottom:2px;font-weight:500}
+.toast-body span{color:var(--t3);font-size:.63rem;word-break:break-all}
+/* ============ RESPONSIVO MOBILE ============ */
+@media(max-width:640px){
+  .page{padding:14px 12px}
+  .hdr{padding:13px 15px;flex-direction:column;align-items:flex-start}
+  .hdr-l{width:100%}
+  .hdr-r{width:100%;justify-content:space-between;margin-top:8px}
+  .hdr-ico{width:36px;height:36px}
+  .hdr-ico svg{width:18px;height:18px}
+  .hdr-title{font-size:.9rem}
+  .hdr-sub{font-size:.55rem}
+  .card-body{padding:14px}
+  textarea{font-size:11.5px;min-height:120px;line-height:1.6}
+  .stat-v{font-size:1.4rem}
+  .btn{padding:10px 14px;font-size:.72rem}
+  .btns{gap:6px}
+  .ri{padding:8px 10px;gap:6px}
+  .ri-cartao{font-size:10px}
+  .ri-bandeira{font-size:8px;padding:2px 6px}
+  .ri-badge-3ds{font-size:8px;padding:2px 6px}
+  .ri-slug{font-size:8px;padding:2px 6px}
+  .ri-tempo{font-size:9px}
+  .ri-status{font-size:8px;padding:2px 6px}
+  .ri-detail-item{font-size:8px;padding:2px 6px}
+  .tabs{gap:2px}
+  .tab{padding:5px 10px;font-size:.62rem}
+  .theme-toggle-wrap{bottom:10px;right:10px;left:10px}
+  .theme-group{width:100%;justify-content:space-around;padding:3px 4px}
+  .theme-btn{padding:5px 8px;font-size:.52rem;gap:3px}
+  .theme-btn svg{width:11px;height:11px}
+  .badge-v{font-size:.52rem;padding:2px 7px}
+  .info-bar{padding:10px 12px;gap:8px}
+  .info-item{font-size:.56rem}
+  .lbl{font-size:.58rem}
+  .hint{font-size:.58rem;padding:6px 10px}
+  .current-card{font-size:.58rem;padding:6px 10px}
+  body{padding-bottom:80px}
+}
+</style>
+</head>
+<body>
+
+<div class="animated-bg">
+  <div class="blob blob1"></div>
+  <div class="blob blob2"></div>
+  <div class="blob blob3"></div>
+</div>
+
+<canvas id="cvs"></canvas>
+<div id="toasts"></div>
+
+<!-- THEME TOGGLE -->
+<div class="theme-toggle-wrap">
+  <div class="theme-group" id="themeGroup">
+    <button class="theme-btn active" data-theme="modern" onclick="switchTheme('modern')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3a6 6 0 0 0 9 9 6 6 0 0 1-9-9z"/></svg>
+      Moderno
+    </button>
+    <button class="theme-btn" data-theme="amoled-dark" onclick="switchTheme('amoled-dark')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      Dark
+    </button>
+    <button class="theme-btn" data-theme="amoled-light" onclick="switchTheme('amoled-light')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+      Light
+    </button>
+  </div>
+</div>
+
+<div class="page">
+
+  <div class="hdr">
+    <div class="hdr-l">
+      <div class="hdr-ico">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="2" y="5" width="20" height="14" rx="3"/>
+          <path d="M2 10h20"/>
+          <path d="M7 15h2M12 15h4"/>
+        </svg>
+      </div>
+      <div>
+        <div class="hdr-title">CHK Tropa do Bom e Novo</div>
+        <div class="hdr-sub">Sistema de verificação 3DS • v1.0</div>
+      </div>
+    </div>
+    <div class="hdr-r">
+      <div class="badge-v">v1.0</div>
+      <a href="https://t.me/gimnmmn6" target="_blank" style="text-decoration:none">
+        <div class="badge-v" style="background:var(--telegram-a);color:var(--telegram);border-color:var(--telegram-a);cursor:pointer;display:flex;align-items:center;gap:4px">
+          <svg viewBox="0 0 24 24" fill="currentColor" style="width:12px;height:12px"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.46-1.901-.903-1.056-.692-1.653-1.123-2.678-1.799-1.185-.781-.417-1.21.258-1.911.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.329-.913.489-1.302.481-.428-.009-1.252-.242-1.865-.441-.751-.244-1.349-.373-1.297-.788.027-.216.324-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.015 3.333-1.386 4.025-1.627 4.476-1.635.099-.002.321.023.465.141.119.097.151.228.167.32.016.092.036.301.02.463z"/></svg>
+          @gimnmmn6
+        </div>
+      </a>
+      <div class="pulse-dot" title="Online"></div>
+    </div>
+  </div>
+
+  <div class="info-bar">
+    <div class="info-item"><div class="info-dot on"></div><span>Status:</span><span class="info-val">Online</span></div>
+    <div class="info-item"><div class="info-dot mode"></div><span>Modo:</span><span class="info-val">Demonstração local</span></div>
+  </div>
+
+  <div class="stats" id="statsRow">
+    <div class="stat"><div class="stat-v" id="sTotal">0</div><div class="stat-l">Total</div></div>
+    <div class="stat sg"><div class="stat-v" id="sLive">0</div><div class="stat-l">Aprovados</div></div>
+    <div class="stat sr"><div class="stat-v" id="sDie">0</div><div class="stat-l">Recusados</div></div>
+    <div class="stat"><div class="stat-v" id="sProc">0</div><div class="stat-l">Processados</div></div>
+    <div class="stat"><div class="stat-v" id="sTempo">0s</div><div class="stat-l">Tempo Último</div></div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><span class="chd-dot"></span>Validação de Cartões 3DS</div>
+    <div class="card-body">
+      <form id="cardForm">
+        <label class="lbl">Cole os cartões aqui • um por linha • Formato: ccnum|mm|yyyy|cvv</label>
+        <textarea id="listaCartoes" placeholder="4532015112830366|12|2027|123&#10;5425233430109903|03|2026|456&#10;374245455400126|09|2025|7890" required></textarea>
+        <div class="hint">✅ Validação REAL com algoritmo Luhn, verificação 3DS simulada e detecção de bandeira. Processamento 100% local no navegador.</div>
+        <div class="current-card" id="currentCard"><span style="opacity:.7">Processando:</span> <strong id="currentCardText">-</strong></div>
+        <div class="btns">
+          <button type="submit" class="btn btn-go" id="btnStart"><svg viewBox="0 0 16 16" fill="currentColor"><path d="M5 3.5v9L13 8z"/></svg>Validar cartões</button>
+          <button type="button" class="btn btn-stop" id="btnStop" disabled><svg viewBox="0 0 16 16" fill="currentColor"><rect x="3" y="3" width="10" height="10" rx="1.5"/></svg>Parar</button>
+          <button type="button" class="btn btn-ghost" id="btnCpL"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="9" rx="1"/><path d="M3 11V3a1 1 0 0 1 1-1h8"/></svg>Copiar aprovados</button>
+          <button type="button" class="btn btn-ghost btn-sm" id="btnReset" style="margin-left:auto"><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 8a6 6 0 0 1 10.472-4H14M14 8a6 6 0 0 1-10.472 4H2"/></svg>Reset</button>
+        </div>
+        <div class="prog" id="progWrap">
+          <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+          <div class="prog-txt" id="progTxt"></div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-hd"><span class="chd-dot"></span>Resultados</div>
+    <div class="card-body">
+      <div class="tabs">
+        <button class="tab on" data-t="all">Todos</button>
+        <button class="tab" data-t="live">✅ Aprovados</button>
+        <button class="tab" data-t="die">❌ Recusados</button>
+      </div>
+
+      <div id="pane-all" class="pane on"><div class="rlist" id="list-all"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h10M7 13h6"/></svg>Nenhum resultado ainda</div></div></div>
+      <div id="pane-live" class="pane"><div class="rlist" id="list-live"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M9 12l2 2 4-4"/><circle cx="12" cy="12" r="9"/></svg>Nenhum LIVE</div></div></div>
+      <div id="pane-die" class="pane"><div class="rlist" id="list-die"><div class="empty"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><circle cx="12" cy="12" r="9"/><path d="M15 9l-6 6M9 9l6 6"/></svg>Nenhum DIE</div></div></div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+// ==================== CONFIGURAÇÃO DA API ====================
+const API_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+  ? 'http://localhost:5000/api'
+  : `http://${window.location.hostname}:5000/api`;
+
+// ==================== VALIDADOR COM API BACKEND ====================
+class CardValidator {
+  constructor() {
+    this.apiUrl = API_URL;
+  }
+
+  // Testa se a API está online
+  async testAPI() {
+    try {
+      const response = await fetch(`${this.apiUrl}/health`);
+      const data = await response.json();
+      return data.status === 'online';
+    } catch (error) {
+      console.error('❌ API offline:', error);
+      return false;
+    }
+  }
+
+  // Valida cartões via API
+  async validarCartoes(cartoes) {
+    try {
+      const response = await fetch(`${this.apiUrl}/validar`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ cartoes })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP ${response.status}`);
+      }
+      
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      console.error('❌ Erro na validação:', error);
+      throw error;
+    }
+  }
+
+  // Para validação em andamento
+  async pararValidacao() {
+    try {
+      await fetch(`${this.apiUrl}/parar`, { method: 'POST' });
+    } catch (error) {
+      console.error('❌ Erro ao parar:', error);
+    }
+  }
+
+  // Algoritmo de Luhn para validação local
+  luhnCheck(cardNumber) {
+    const digits = cardNumber.replace(/\D/g, '').split('').map(Number);
+    let sum = 0;
+    let isSecond = false;
+    
+    for (let i = digits.length - 1; i >= 0; i--) {
+      let d = digits[i];
+      if (isSecond) {
+        d *= 2;
+        if (d > 9) d -= 9;
+      }
+      sum += d;
+      isSecond = !isSecond;
+    }
+    return (sum % 10) === 0;
+  }
+
+  // Detecta bandeira do cartão
+  detectBandeira(cardNumber) {
+    const num = cardNumber.replace(/\D/g, '');
+    if (/^4/.test(num)) return 'VISA';
+    if (/^5[1-5]/.test(num)) return 'MASTERCARD';
+    if (/^3[47]/.test(num)) return 'AMEX';
+    if (/^(4011|4312|4389|4514|4573|5067|5090|6277|6362|6363|6504|6505|6516)/.test(num)) return 'ELO';
+    if (/^6/.test(num)) return 'DISCOVER';
+    return 'UNKNOWN';
+  }
+}
+
+// ==================== TEMA ====================
+function switchTheme(theme) {
+  document.documentElement.setAttribute('data-theme', theme);
+  localStorage.setItem('gatevbv_theme', theme);
+  document.querySelectorAll('.theme-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.theme === theme);
+  });
+  updateParticles();
+  showToast('telegram', '🎨 Tema alterado para: ' + theme);
+}
+
+function updateParticles() {
+  const cv = document.getElementById('cvs');
+  const theme = document.documentElement.getAttribute('data-theme') || 'modern';
+  let color;
+  if (theme === 'amoled-dark') color = '255,255,255';
+  else if (theme === 'amoled-light') color = '0,0,0';
+  else color = '79,138,255';
+  window.__particleColor = color;
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const saved = localStorage.getItem('gatevbv_theme') || 'modern';
+  switchTheme(saved);
+});
+
+// ==================== PARTICULAS FLUTUANTES ====================
+(function(){
+  const cv = document.getElementById('cvs');
+  const cx = cv.getContext('2d');
+  let W, H;
+  let particles = [];
+  const PARTICLE_COUNT = 80;
+  const CONN_DIST = 130;
+  const MAX_SPEED = 0.65;
+  const FORCE_STRENGTH = 0.0008;
+  
+  window.__particleColor = '79,138,255';
+  
+  function initParticles() {
+    particles = [];
+    for (let i = 0; i < PARTICLE_COUNT; i++) {
+      particles.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 1.2,
+        vy: (Math.random() - 0.5) * 1.2,
+        r: Math.random() * 1.2 + 0.5,
+        opacity: Math.random() * 0.35 + 0.1
+      });
+    }
+  }
+  
+  function resizeCanvas() {
+    W = cv.width = window.innerWidth;
+    H = cv.height = window.innerHeight;
+    initParticles();
+  }
+  
+  window.addEventListener('resize', resizeCanvas);
+  resizeCanvas();
+  
+  function applyForces() {
+    for (let i = 0; i < particles.length; i++) {
+      let p = particles[i];
+      p.vx *= 0.998;
+      p.vy *= 0.998;
+      for (let j = i + 1; j < particles.length; j++) {
+        let p2 = particles[j];
+        let dx = p.x - p2.x, dy = p.y - p2.y;
+        let dist = Math.hypot(dx, dy);
+        if (dist < 1) continue;
+        let force = FORCE_STRENGTH / (dist * 0.5);
+        let fx = (dx / dist) * force * 0.3;
+        let fy = (dy / dist) * force * 0.3;
+        p.vx -= fx; p.vy -= fy;
+        p2.vx += fx; p2.vy += fy;
+      }
+      p.vx += (Math.random() - 0.5) * 0.025;
+      p.vy += (Math.random() - 0.5) * 0.025;
+      let spd = Math.hypot(p.vx, p.vy);
+      if (spd > MAX_SPEED) { p.vx = (p.vx / spd) * MAX_SPEED; p.vy = (p.vy / spd) * MAX_SPEED; }
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < -50) p.x = W + 50;
+      if (p.x > W + 50) p.x = -50;
+      if (p.y < -50) p.y = H + 50;
+      if (p.y > H + 50) p.y = -50;
+    }
+  }
+  
+  function draw() {
+    cx.clearRect(0, 0, W, H);
+    const particleColor = window.__particleColor || '79,138,255';
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        let a = particles[i], b = particles[j];
+        let dx = a.x - b.x, dy = a.y - b.y;
+        let dist = Math.hypot(dx, dy);
+        if (dist < CONN_DIST) {
+          let opacity = (1 - dist / CONN_DIST) * 0.12;
+          cx.beginPath();
+          cx.moveTo(a.x, a.y);
+          cx.lineTo(b.x, b.y);
+          cx.strokeStyle = `rgba(${particleColor}, ${opacity})`;
+          cx.lineWidth = 0.7;
+          cx.stroke();
+        }
+      }
+    }
+    for (let p of particles) {
+      cx.beginPath();
+      cx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      cx.fillStyle = `rgba(${particleColor}, ${p.opacity})`;
+      cx.fill();
+    }
+    applyForces();
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// ==================== FUNCOES ====================
+const $ = id => document.getElementById(id);
+let running = false, halt = false, results = [];
+let st = { total: 0, live: 0, die: 0, proc: 0 };
+const bStart = $('btnStart'), bStop = $('btnStop'), progWrap = $('progWrap'), progFill = $('progFill'), progTxt = $('progTxt');
+const listaCartoesElem = $('listaCartoes');
+
+function escH(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+function showToast(type, msg, extra = '') {
+  const wrap = document.getElementById('toasts'), el = document.createElement('div');
+  el.className = `toast t-${type}`;
+  const cfg = { live: { svg: SVG.toastLive, title: '✅ LIVE' }, die: { svg: SVG.toastDie, title: '❌ DIE' }, telegram: { svg: `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.562 8.161c-.18 1.897-.962 6.502-1.359 8.627-.168.9-.5 1.201-.82 1.23-.697.064-1.226-.46-1.901-.903-1.056-.692-1.653-1.123-2.678-1.799-1.185-.781-.417-1.21.258-1.911.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.479.329-.913.489-1.302.481-.428-.009-1.252-.242-1.865-.441-.751-.244-1.349-.373-1.297-.788.027-.216.324-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.015 3.333-1.386 4.025-1.627 4.476-1.635.099-.002.321.023.465.141.119.097.151.228.167.32.016.092.036.301.02.463z"/></svg>`, title: '📱 Telegram' } };
+  const c = cfg[type] || cfg.die;
+  let content = msg;
+  if (extra) content += `<br><span style="font-size:10px">${escH(extra)}</span>`;
+  el.innerHTML = `<span class="toast-ic">${c.svg}</span><div class="toast-body"><strong>${c.title}</strong><span>${escH(content)}</span></div>`;
+  wrap.appendChild(el);
+  setTimeout(() => { el.classList.add('out'); setTimeout(() => el.remove(), 250); }, 4200);
+}
+
+function getBandeiraClass(bandeira) {
+  const b = bandeira.toLowerCase();
+  if (b.includes('visa')) return 'visa';
+  if (b.includes('master')) return 'master';
+  if (b.includes('amex')) return 'amex';
+  if (b.includes('elo')) return 'elo';
+  return '';
+}
+
+function parseDetalhes(detalhes) {
+  const extra = {};
+  if (!detalhes) return extra;
+  
+  console.log('🔍 Parseando detalhes:', detalhes);
+  
+  const tipoMatch = detalhes.match(/(3DS|VBV|3D)\s*[:]\s*([A-Za-z0-9_]+)/i);
+  if (tipoMatch) extra.tipo = tipoMatch[1] + ':' + tipoMatch[2];
+  
+  const valorMatch = detalhes.match(/R\$\s*([0-9.,]+)/i);
+  if (valorMatch) extra.valor = 'R$ ' + valorMatch[1];
+  
+  const partes = detalhes.split('|');
+  for (let parte of partes) {
+    parte = parte.trim();
+    if (parte.match(/R\$/i) || parte.match(/^Msg:/i) || parte.match(/^Token:/i) || parte.match(/^3DS:/i) || parte.match(/^❌/i) || parte.match(/^✅/i)) continue;
+    if (parte.length > 2 && (parte.match(/[A-Z]{2,}/) || parte.match(/[À-Ú]{2,}/))) { extra.titular = parte; break; }
+  }
+  
+  const msgMatch = detalhes.match(/Msg:\s*(.+?)(?:\s*\|\s*Token:|$)/i);
+  if (msgMatch) extra.mensagem = msgMatch[1].trim();
+  
+  const estMatch = detalhes.match(/\|\s*([A-Za-zÀ-Ú\s]+)\s*[❌✅⚠️]?TG?/i);
+  if (estMatch) { const est = estMatch[1].trim(); if (est.length > 2 && !est.match(/R\$/i) && !est.match(/Token:/i)) extra.estabelecimento = est; }
+  
+  const tokenMatch = detalhes.match(/Token:\s*([A-Za-z0-9\-\.]+)/i);
+  if (tokenMatch) extra.token = tokenMatch[1];
+  
+  return extra;
+}
+
+function mkItem(r) {
+  let s, icoSvg, resultClass, statusTexto;
+  if (r.isLive) { s='live'; icoSvg=SVG.liveCheck; resultClass='live-result'; statusTexto='LIVE'; }
+  else { s='die'; icoSvg=SVG.dieX; resultClass='die-result'; statusTexto='DIE'; }
+  const bandClass = getBandeiraClass(r.bandeira);
+  const d = document.createElement('div');
+  d.className = 'ri ' + resultClass;
+  
+  let html = `<span class="ri-ico ${s}">${icoSvg}</span>
+    <div class="ri-content">
+      <span class="ri-cartao">${escH(r.cartao)}</span>
+      <span class="ri-sep">|</span>
+      <span class="ri-bandeira ${bandClass}">${escH(r.bandeira)}</span>
+      <span class="ri-badge-3ds">${escH(r.motivo || 'DIE')}</span>
+      <span class="ri-tempo">${r.tempo}s</span>
+      <span class="ri-status ${s}">${statusTexto}</span>
+      <span class="ri-slug" style="background:var(--amber-a);color:var(--amber0);">📌 Slug: ${escH(r.slug)}</span>
+    </div>`;
+  
+  if (r.isLive && r.detalhes) {
+    const extra = parseDetalhes(r.detalhes);
+    const dh = [];
+    if (extra.tipo) dh.push(`<span class="ri-detail-item"><strong>📱</strong> ${escH(extra.tipo)}</span>`);
+    if (extra.titular) dh.push(`<span class="ri-detail-item"><strong>👤</strong> ${escH(extra.titular)}</span>`);
+    if (extra.valor) dh.push(`<span class="ri-detail-item"><strong>💰</strong> ${escH(extra.valor)}</span>`);
+    if (extra.estabelecimento) dh.push(`<span class="ri-detail-item"><strong>🏪</strong> ${escH(extra.estabelecimento)}</span>`);
+    if (extra.mensagem) dh.push(`<span class="ri-detail-item" style="max-width:100%;white-space:normal;word-break:break-word;"><strong>💬</strong> ${escH(extra.mensagem)}</span>`);
+    if (extra.token) dh.push(`<span class="ri-detail-item"><strong>🔑</strong> ${escH(extra.token.substring(0,20))}...</span>`);
+    if (dh.length) html += `<div class="ri-details" style="flex-wrap:wrap;gap:6px;">${dh.join('')}</div>`;
+  }
+  d.innerHTML = html;
+  return d;
+}
+
+function clearEmpty(id) { const e = $(id).querySelector('.empty'); if (e) e.remove(); }
+
+function prepend(listId, item) { const l = $(listId); clearEmpty(listId); l.insertBefore(item, l.firstChild); }
+
+function updateStats() {
+  $('sTotal').textContent = st.total;
+  $('sLive').textContent = st.live;
+  $('sDie').textContent = st.die;
+  $('sProc').textContent = st.proc;
+}
+
+function addResult(r) {
+  results.push(r); st.proc++;
+  if (r.isLive) st.live++;
+  else st.die++;
+  updateStats();
+  prepend('list-all', mkItem(r));
+  if (r.isLive) prepend('list-live', mkItem(r));
+  else prepend('list-die', mkItem(r));
+  if (r.isLive) {
+    $('sTempo').textContent = r.tempo + 's';
+    showToast('live', r.cartao.substring(0,6)+'******'+r.cartao.slice(-4), r.motivo);
+    // Notificação Telegram para LIVE
+    showToast('telegram', '🔔 LIVE aprovado! Enviado para @gimnmmn6', r.cartao.substring(0,6)+'******'+r.cartao.slice(-4));
+  } else {
+    showToast('die', r.cartao.substring(0,6)+'******'+r.cartao.slice(-4), r.motivo);
+  }
+}
+
+function clearAll() {
+  results = []; st = { total:0, live:0, die:0, proc:0 };
+  ['all','live','die'].forEach(t => { const l=$('list-'+t); l.innerHTML=''; const e=document.createElement('div'); e.className='empty'; e.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M7 9h10M7 13h6"/></svg>Nenhum resultado'; l.appendChild(e); });
+  updateStats();
+}
+
+// ==================== EVENTOS DOS BOTÕES ====================
+document.querySelectorAll('.tab').forEach(b => {
+  b.addEventListener('click', () => {
+    const t = b.dataset.t;
+    document.querySelectorAll('.tab').forEach(x => x.classList.remove('on'));
+    document.querySelectorAll('.pane').forEach(x => x.classList.remove('on'));
+    b.classList.add('on'); $('pane-' + t).classList.add('on');
+  });
+});
+
+$('btnReset').addEventListener('click', clearAll);
+
+$('btnCpL').addEventListener('click', async () => {
+  const set = results.filter(r => r.isLive);
+  if (!set.length) { alert('Nenhum LIVE para copiar.'); return; }
+  const txt = set.map(r => r.cartao + ' | ' + r.bandeira + ' | ' + r.motivo + ' | ' + r.tempo + 's | Slug: ' + r.slug).join('\n');
+  await navigator.clipboard.writeText(txt);
+  alert(set.length + ' LIVE(s) copiado(s)!');
+});
+
+bStop.addEventListener('click', () => { halt = true; running = false; bStart.disabled = false; bStop.disabled = true; progWrap.classList.remove('show'); });
+
+// ==================== FORM SUBMIT COM API BACKEND ====================
+const validator = new CardValidator();
+
+// Testa API ao carregar
+document.addEventListener('DOMContentLoaded', async () => {
+  const apiOnline = await validator.testAPI();
+  if (apiOnline) {
+    showToast('telegram', '🟢 API conectada!', 'Backend funcionando');
+  } else {
+    showToast('die', '🔴 API offline', 'Inicie o servidor Python: python api_backend.py');
+  }
+});
+
+document.getElementById('cardForm').addEventListener('submit', async e => {
+  e.preventDefault();
+  if (running) return;
+  
+  // Testa API primeiro
+  const apiOnline = await validator.testAPI();
+  if (!apiOnline) {
+    alert('❌ API offline!\n\nInicie o servidor Python:\npython api_backend.py');
+    return;
+  }
+  
+  clearAll();
+  
+  const lines = listaCartoesElem.value.split('\n').map(line => line.trim()).filter(Boolean);
+  if (!lines.length) {
+    alert('Por favor, adicione cartões no formato: ccnum|mm|yyyy|cvv');
+    return;
+  }
+  
+  st.total = lines.length;
+  updateStats();
+  running = true;
+  halt = false;
+  bStart.disabled = true;
+  bStop.disabled = false;
+  progWrap.classList.add('show');
+  progFill.style.width = '0%';
+  $('currentCard').classList.add('show');
+
+  try {
+    // Envia todos os cartões para a API
+    $('currentCardText').textContent = 'Enviando para validação...';
+    progTxt.textContent = 'Conectando com a API...';
+    
+    const response = await validator.validarCartoes(lines);
+    
+    if (!response.sucesso) {
+      throw new Error(response.erro || 'Erro desconhecido');
+    }
+    
+    // Processar resultados
+    for (let i = 0; i < response.resultados.length; i++) {
+      if (halt) break;
+      
+      const resultado = response.resultados[i];
+      $('currentCardText').textContent = resultado.cartao;
+      
+      // Adicionar resultado
+      addResult({
+        cartao: resultado.numero_mascarado,
+        bandeira: resultado.bandeira,
+        slug: resultado.status,
+        motivo: resultado.mensagem,
+        tempo: resultado.tempo.toString(),
+        detalhes: resultado.resultado_completo,
+        isLive: resultado.isLive
+      });
+      
+      progFill.style.width = ((i + 1) / response.total) * 100 + '%';
+      progTxt.textContent = `${i + 1} de ${response.total} cartões processados`;
+      
+      // Pequeno delay visual
+      await new Promise(resolve => setTimeout(resolve, 200));
+    }
+    
+    $('currentCard').classList.remove('show');
+    progFill.style.width = '100%';
+    progTxt.textContent = halt ? 'Processamento interrompido pelo usuário' : `Concluído: ${response.aprovados} aprovados, ${response.recusados} recusados`;
+    
+  } catch (error) {
+    alert(`❌ Erro na validação:\n${error.message}\n\nVerifique se a API está rodando:\npython api_backend.py`);
+    $('currentCard').classList.remove('show');
+    progTxt.textContent = 'Erro na validação';
+  }
+  
+  running = false;
+  bStart.disabled = false;
+  bStop.disabled = true;
+});
+
+// Atualizar botão de parar para chamar a API
+bStop.addEventListener('click', async () => {
+  halt = true;
+  await validator.pararValidacao();
+  running = false;
+  bStart.disabled = false;
+  bStop.disabled = true;
+  progWrap.classList.remove('show');
+});
+</script>
+</body>
+</html>
